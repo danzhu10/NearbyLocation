@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "751094774642",
+    "firebase_url": "https://mangjektest.firebaseio.com",
+    "project_id": "mangjektest",
+    "storage_bucket": "mangjektest.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:751094774642:android:bdacee746d018d7b",
+        "android_client_info": {
+          "package_name": "android.tes.mangjek"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "751094774642-d0ergpt2km95llgmh9auskruccpiudqv.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "android.tes.mangjek",
+            "certificate_hash": "22911c27eea1db45ee8a3b96f7166beff850090d"
+          }
+        },
+        {
+          "client_id": "751094774642-5ii0ep2iu5g9rafhp7u8lvlrsta4g74h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCCSedAWIG2tPOtTg1OyhvJxLcf8_EOYNs"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "751094774642-5ii0ep2iu5g9rafhp7u8lvlrsta4g74h.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
