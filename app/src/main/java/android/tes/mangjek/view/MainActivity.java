@@ -1,7 +1,9 @@
 package android.tes.mangjek.view;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AlertDialog;
@@ -29,6 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     GetNearbyPlacesData getNearbyPlacesData;
     LocationProvider provider;
     LatLng latLng;
+    private LocationManager mLocationManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,19 +41,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         school = (Button) findViewById(R.id.button3);
         restaurant.setOnClickListener(this);
         school.setOnClickListener(this);
-        provider = new LocationProvider(this,null);
-        checkGPS();
+        provider = new LocationProvider(this, null);
+        mLocationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
     }
 
     public void checkGPS() {
-        latLng = provider.getLocation();
         final AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setMessage("Anda mematikan GPS, Silahkan aktifkan GPS Anda?")
                 .setCancelable(false)
                 .setPositiveButton("Ya", new DialogInterface.OnClickListener() {
                     public void onClick(final DialogInterface dialog, final int id) {
-                        startActivityForResult(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS), 100);
-                        dialog.dismiss();
+                        startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
 
                     }
                 })
@@ -60,17 +61,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     }
                 });
         AlertDialog alert = builder.create();
-        if (latLng == null) {
-            alert.show();
-        } else {
-            alert.dismiss();
-        }
+        alert.show();
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        checkGPS();
+    protected void onResume() {
+        super.onResume();
+        if (provider.getLocation()==null) {
+            checkGPS();
+        }else {
+            latLng = provider.getLocation();
+        }
     }
 
     @Override
@@ -85,19 +86,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void getData(String s) {
+    private void getData(final String s) {
         if (Utils.isNetworkConnected(this)) {
-            Double latitude = latLng.latitude;
-            Double longitude = latLng.longitude;
+            if (latLng != null) {
+                Double latitude = latLng.latitude;
+                Double longitude = latLng.longitude;
 //            url = getUrl(-2.964567, 104.764678, s);
-            url = getUrl(latitude, longitude, s);
-            DataTransfer = new Object[1];
-            DataTransfer[0] = url;
-            getNearbyPlacesData = new GetNearbyPlacesData(this);
-            getNearbyPlacesData.execute(DataTransfer);
-        } else {
+                url = getUrl(latitude, longitude, s);
+                DataTransfer = new Object[1];
+                DataTransfer[0] = url;
+                getNearbyPlacesData = new GetNearbyPlacesData(this);
+                getNearbyPlacesData.execute(DataTransfer);
+            }
+        } else
             Utils.toastShort(this, "Tidak ada koneksi internet");
-        }
+
     }
 
     private String getUrl(double latitude, double longitude, String nearbyPlace) {
